@@ -1,7 +1,8 @@
 const express=require("express");
 const CourseDate=require('./src/model/CourseData');
 const app=express();
-app.use(express.json())
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 
 //courseList=[
 //     {
@@ -67,5 +68,49 @@ CourseDate.find().then(function(courses){
 })
 
 })
+
+app.post('/addcourse',function(req,res){
+var item={
+   
+    courseTitle:req.body.courseTitle,
+    courseDescription:req.body.courseDescription,
+    courseDuration:req.body.courseDuration,
+    courseDate:req.body.courseDate,
+    courseVenue:req.body.courseVenue
+
+         }
+
+var course=CourseDate(item);
+course.save();
+
+CourseDate.find()
+.then(function(course){
+     res.send(course);
+
+})
+
+})
+app.put('/update/:id',function(req,res){
+
+const id=req.params.id;
+courseTitle=req.body.courseTitle;
+courseDescription=req.body.courseDescription;
+courseDuration=req.body.courseDuration;
+courseDate=req.body.courseDate;
+courseVenue=req.body.courseVenue;
+
+CourseDate.findByIdAndUpdate({"_id":id},
+{$set:{"courseTitle":courseTitle,
+"courseDescription":courseDescription,
+"courseDuration":courseDuration,
+"courseDate":courseDate,
+"courseVenue":courseVenue
+}}).then(function(){
+    res.send("Updated")});
+
+}
+
+)
+
 
 app.listen(3000);
