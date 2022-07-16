@@ -1,6 +1,8 @@
 const express=require("express");
+const CourseDate=require('./src/model/CourseData');
 const app=express();
 app.use(express.json())
+
 //courseList=[
 //     {
 //         "courseTitle":"React",
@@ -51,5 +53,19 @@ app.use(express.json())
 // res.status(200).send(courseList);
 // }
 // )
+
+
+
+
+app.get('/getcourses',function(req,res){
+
+CourseDate.find().then(function(courses){
+
+           console.log(courses);
+           res.send(courses);
+
+})
+
+})
 
 app.listen(3000);
